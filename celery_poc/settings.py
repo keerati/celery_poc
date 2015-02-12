@@ -98,7 +98,6 @@ CELERY_ROUTES = {
     }
 }
 CELERY_QUEUES = (
-    Queue('celery', routing_key='celery'),
     Queue('feed',   routing_key='feed'),
     Broadcast('broadcast_queue'),
 )
