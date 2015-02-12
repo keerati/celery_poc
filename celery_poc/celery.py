@@ -34,11 +34,13 @@ def print_json_for_feed(self, data):
 
 
 # ========== signals ===============
-@task_postrun.connect(sender = print_json)
+@task_postrun.connect
 def post_to_websocket_server(**kwargs):
     logger.debug('post to websocket server!')
+    logger.debug('params %s' % repr(kwargs))
+    task = kwargs.get('task')
     headers   = {'content-type' : 'application/json' }
-    post_dict = { "msg" : "req"}
+    post_dict = { "msg" : "%s just finished." % task.name }
     post_data = json.dumps(post_dict)
     response  = requests.post(
             "http://localhost:30000/post",
