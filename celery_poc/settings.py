@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'djcelery',
+    'celery_poc'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,5 +86,25 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+from kombu import Queue
+from kombu import Exchange
+from kombu.common import Broadcast
+
 BROKER_URL = 'amqp://localhost:5672//'
+
+CELERY_ROUTES = {
+    'celery_poc.celery.print_json_for_feed': {
+        'queue': 'feed'
+    }
+}
+CELERY_QUEUES = (
+    Queue('celery', routing_key='celery'),
+    Queue('feed',   routing_key='feed'),
+    Broadcast('broadcast_queue'),
+)
+
+CELERY_IMPORTS = (
+    'celery.task.http'
+)
+
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
