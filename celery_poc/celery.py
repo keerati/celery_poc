@@ -32,6 +32,15 @@ def print_json_for_feed(self, data):
     sleep(10)
     logger.info('got data %s' % data)
 
+@app.task(bind=True)
+def parent_task(self, x, y):
+    logger.info('start parent task with %d and %d'%(x,y))
+    return (x + y) / (x - y)
+
+@app.task(bind=True)
+def child_task(self, a_number):
+    logger.info('start child task')
+    return a_number + 10 
 
 # ========== signals ===============
 @task_postrun.connect

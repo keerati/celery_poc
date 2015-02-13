@@ -5,6 +5,7 @@ from celery_poc.views import SubmitFeedView
 from celery_poc.views import SubmitWebhookTaskView
 from celery_poc.views import SubmitToFanoutQueueView
 from celery_poc.views import SubmitToBroadCastQueueView
+from celery_poc.views import ChainTaskView
 
 urlpatterns = patterns('',
     # Examples:
@@ -16,5 +17,6 @@ urlpatterns = patterns('',
     url(r'^task/fanout$', SubmitToFanoutQueueView.as_view(), name='task_fanout'),
     url(r'^task/webhook$', SubmitWebhookTaskView.as_view(), name='task_webhook'),
     url(r'^task/bc$', SubmitToBroadCastQueueView.as_view(), name='task_bc'),
+    url(r'^task/chain$', ChainTaskView.as_view(), name='task_chain'),
     url(r'^feed$', SubmitFeedView.as_view(), name='feed'),
 )
